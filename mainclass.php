@@ -1,18 +1,18 @@
 <?php
 
-include 'config.php';
+include 'config.php'; //including the config file to access database.
 
 	class MainDAO extends BaseDAO{
 		
-		function getUserFullName($UserID){
+		function getUserFullName($UserID){ //getting A user's full name.
 		
 			$this->openCon();
 				
 				$sql = "SELECT ui.users_info_ID,ui.Fname,ui.Lname,ui.Nname FROM users AS u, users_info AS ui
 						WHERE u.usersID = ui.usersID AND ui.usersID = ?";
-				$stmt = $this->dbCon->prepare($sql);
-				$stmt->bindParam(1,$UserID);
-				$stmt->execute();
+				$stmt = $this->dbCon->prepare($sql); //preparing the query for execution.
+				$stmt->bindParam(1,$UserID); //binding parameter for the above query.
+				$stmt->execute(); //executing the query .
 				
 			$this->closeCon();
 		
@@ -21,7 +21,7 @@ include 'config.php';
 			
 		}
 		
-		function countUsersOnline(){
+		function countUsersOnline(){  //getting the total online users
 		
 			$this->openCon();
 				
@@ -36,7 +36,7 @@ include 'config.php';
 			return $NumberOfUser[0];
 		}
 		
-		function getListOfUsers($name){
+		function getListOfUsers($name){ //getting the total registered users.
 		   	   
 			$this->openCon();
 				
@@ -55,7 +55,7 @@ include 'config.php';
 						
 		}
 	
-		function saveChatMsg($UserID,$Msg){
+		function saveChatMsg($UserID,$Msg){  //saving the chat msg to the table public_chat_msg
 		   	   
 			$this->openCon();
 				
@@ -70,7 +70,7 @@ include 'config.php';
 	   	
 		}
 		
-		function refreshPubChat(){
+		function refreshPubChat(){ //refreshing and selecting the recent chat msgs 
 		
 		    	   
 			$this->openCon();
@@ -87,7 +87,7 @@ include 'config.php';
 								
 			$this->closeCon();
 				
-				while($row = $stmt->fetch()){
+				while($row = $stmt->fetch()){ //fetching result and adding minor(4) smily supports
 				
 					if($row[2] == 'smiley_bleeh.png' || $row[2] == 'smiley_cool.png' || $row[2] == 'smiley_rar.png' || $row[2] == 'smiley_robot.png'){
 						$row[2] = "<img src = 'images/".$row[2]."' alt='smiley_icon'  />";
@@ -98,7 +98,7 @@ include 'config.php';
 			
 		}
 		
-		function saveUploaded_Img($UserID,$NewProfilePic){
+		function saveUploaded_Img($UserID,$NewProfilePic){  //saving the profile pic
 		
 			$this->openCon();
 				
@@ -109,7 +109,7 @@ include 'config.php';
 				
 				$found = $stmt->fetch();
 				
-				if($found[0] == "" || $found[0] == null){
+				if($found[0] == "" || $found[0] == null){ //inserting profile pic if no previous pic is found.
 					$sql2 = "INSERT INTO profile_pics VALUES(null,?,?)";
 					$stmt = $this->dbCon->prepare($sql2);
 					$stmt->bindParam(1,$UserID);			
@@ -117,7 +117,7 @@ include 'config.php';
 					$stmt->execute();	
 					
 				}else{
-					$sql2 = "UPDATE profile_pics SET pic_label = ? WHERE usersID = ?";
+					$sql2 = "UPDATE profile_pics SET pic_label = ? WHERE usersID = ?"; //updating the profile pic if found
 					$stmt = $this->dbCon->prepare($sql2);				
 					$stmt->bindParam(1,$NewProfilePic);	
 					$stmt->bindParam(2,$UserID);				
@@ -131,7 +131,7 @@ include 'config.php';
 	   	
 		}
 		
-		function getUsersProfile_Pic($UserID){
+		function getUsersProfile_Pic($UserID){ //getting the profile pic
 		
 			$this->openCon();
 				
@@ -150,7 +150,7 @@ include 'config.php';
    	
 		}
 		
-		function saveUsersPost($UserID,$Users_Post,$P_date){
+		function saveUsersPost($UserID,$Users_Post,$P_date){  //saving status in table users_post
 				
 			$this->openCon();
 				
@@ -170,7 +170,7 @@ include 'config.php';
 		}
 		
 		
-		function getUsersPost($UserID){
+		function getUsersPost($UserID){ //getting the user's post
 		
 		    $this->openCon();
 				
@@ -193,7 +193,7 @@ include 'config.php';
 				$stmt_stat->execute();
 				$status = $stmt_stat->fetch();
 				
-				if($status[0] == ""){
+				if($status[0] == ""){ //setting the like and unlike option accordingly
 					$status[0] = 'Like';
 				}else if($status[0] == 'Like'){
 					$status[0] = 'Unlike';
@@ -261,7 +261,7 @@ include 'config.php';
 			$this->closeCon();
 		}
 		
-		function updatePostStatus($postID,$userID,$status){
+		function updatePostStatus($postID,$userID,$status){ //updating the post
 	
 		 	$this->openCon();
 				
@@ -272,14 +272,14 @@ include 'config.php';
 				$stmt->execute();
 				$exist = $stmt->fetch();
 				if($exist[0] == ""){
-					$sql2 = "INSERT INTO post_status VALUES(null,?,?,?)";
+					$sql2 = "INSERT INTO post_status VALUES(null,?,?,?)"; //inserting 
 					$stmt2 = $this->dbCon->prepare($sql2);
 					$stmt2->bindParam(1,$postID);
 					$stmt2->bindParam(2,$userID);
 					$stmt2->bindParam(3,$status);
 					$stmt2->execute();
 				}else{
-					$sql2 = "UPDATE post_status SET status=? WHERE postID = ? AND usersID=?";
+					$sql2 = "UPDATE post_status SET status=? WHERE postID = ? AND usersID=?"; //updaing if a previous post exists
 					$stmt2 = $this->dbCon->prepare($sql2);
 					$stmt2->bindParam(1,$status);
 					$stmt2->bindParam(2,$postID);
@@ -290,7 +290,7 @@ include 'config.php';
 			$this->closeCon();
 		}
 
-        function displayLikers($postID){
+        function displayLikers($postID){ //getting the likers
 
             $this->openCon();
 
@@ -314,7 +314,7 @@ include 'config.php';
 
         }
 		
-		function savePostComment($UserID,$PostID,$Comment,$Comment_date_time){
+		function savePostComment($UserID,$PostID,$Comment,$Comment_date_time){  //saving the comments.
 		
 			$this->openCon();
 				
@@ -336,7 +336,7 @@ include 'config.php';
 		
 	  }
 	  
-	  function countNotifications($UserID){
+	  function countNotifications($UserID){ //counting the no. of notifications
 	  
 		 	$this->openCon();
 				
@@ -356,7 +356,7 @@ include 'config.php';
 			
 	  }
 	  
-	  function displayNotification($UserID){
+	  function displayNotification($UserID){ //getting the notifications
 	  
 	  	$this->openCon();
 
@@ -516,7 +516,7 @@ include 'config.php';
 				
 	  }
 
-	  function saveToNotifications($UserID,$PostID,$type){
+	  function saveToNotifications($UserID,$PostID,$type){ //saving an action to the database.
 
 	  		$this->openCon();
                 $exist = 0;
