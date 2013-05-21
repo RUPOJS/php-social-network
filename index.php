@@ -1,18 +1,18 @@
 <?php
-  session_start();
+  session_start();  //starting the session
 	
-	include 'AccountsConfig.php';
+	include 'AccountsConfig.php'; //include the account config
 	$action = new AccountsDAO();
-	if(isset($_SESSION['UserID'])){
-		header('Location:mainpage.php');
+	if(isset($_SESSION['UserID'])){ //if logged in
+		header('Location:mainpage.php'); //redirect the page to Mainpage
 	}else if(isset($_POST['email']) && isset($_POST['password'])){
-		$verrified = $action -> LogInUser($_POST['email'],$_POST['password']);
+		$verrified = $action -> LogInUser($_POST['email'],$_POST['password']); //calling the function to verify the appropriate credentials.
 		if($verrified){
 			$UserID = $action->GetUseriD_SetUserStatus($_POST['email']);
 			$_SESSION['UserID'] = $UserID;
-			header('Location: mainpage.php');
+			header('Location: mainpage.php'); //if verified redirect
 		}else{
-			$errMsg = "<div class='ErrorMsg'>Unknown User!</div>";
+			$errMsg = "<div class='ErrorMsg'>Unknown User!</div>"; //otherwise show the error msg
 			
 		}
 	}
