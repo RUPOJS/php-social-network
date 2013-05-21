@@ -2,23 +2,23 @@
   
 	session_start();
 	
-		include 'mainclass.php';
+		include 'mainclass.php'; //including the main class file
 		$action = new MainDAO();
-		if(!isset($_SESSION['UserID'])){
-			header('Location:index.php');
-		}else if(isset($_FILES['Profile_pic'])){
+		if(!isset($_SESSION['UserID'])){ //if user_id is not set in current session
+			header('Location:index.php'); //redirect to login page
+		}else if(isset($_FILES['Profile_pic'])){ 
 			 $name = $_FILES['Profile_pic']['name'];
 			  $type = $_FILES['Profile_pic']['type'];
 			  $error = $_FILES['Profile_pic']['error'];
 			  $tmp_name = $_FILES['Profile_pic']['tmp_name'];
-			  $directory = "images/";
+			  $directory = "images/"; //setting our directory for storing the uploaded images
 		   if($error>0){
 			  $ErrorPicMsg =  "Error on Uploading File =>".$error;
 		   }else if($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png' || $type == 'image/gif' ){
 		   
-				move_uploaded_file($tmp_name, $directory.$name);
+				move_uploaded_file($tmp_name, $directory.$name); //moving the images
 				$NewProfilePic = $directory.$name;
-			    $action -> saveUploaded_Img($_SESSION['UserID'],$NewProfilePic);
+			    $action -> saveUploaded_Img($_SESSION['UserID'],$NewProfilePic); //saving the image
   			  
 		   }else{
 			  $ErrorPicMsg = 'Unsupported Format';
