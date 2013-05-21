@@ -1,10 +1,10 @@
 <?php
 
-include 'config.php';
+include 'config.php'; //including the congig file to access database
 
 class AccountsDAO extends BaseDAO {
     
-    function LogInUser($email,$password) {
+    function LogInUser($email,$password) { //logg in a user with proper credentials
         $this->openCon();
         
         $pass = $password;
@@ -24,7 +24,7 @@ class AccountsDAO extends BaseDAO {
         }
     }
     
-    function LogOutUser($User_id) {
+    function LogOutUser($User_id) { //logg out the user,followed by destroying the current session
         $this->openCon();
         
         $sql = "UPDATE users SET status = 'offline' WHERE userID = ?";
@@ -35,7 +35,7 @@ class AccountsDAO extends BaseDAO {
         $this->closeCon();
     }
     
-    function GetUseriD_SetUserStatus($email) {
+    function GetUseriD_SetUserStatus($email) { //setting the online or offline status
         $this->openCon();
         
         $sql = 'SELECT usersID FROM users WHERE email_add=?';
@@ -54,7 +54,7 @@ class AccountsDAO extends BaseDAO {
         return $UserID[0];
     }
     
-    function AddAccount($firstname,$lastname,$nickname,$email,$password,$gender,$bdate,$age,$NewProfilePic) {
+    function AddAccount($firstname,$lastname,$nickname,$email,$password,$gender,$bdate,$age,$NewProfilePic) { //registering a new account
         $this->openCon();
         $pass = $password;
         $sql = 'INSERT INTO users(email_add,password) values(?,?)';
