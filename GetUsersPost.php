@@ -1,13 +1,15 @@
 <?php
 
+    session_start();
+    
+    include 'DAO/MainDAO.php';
+    
 
-session_start();
+    $UserID = $_SESSION['UserID'];
+    $action = new MainDAO();
+    
+    $action -> getUsersPost($UserID);
 
-include 'mainclass.php';
-
-$UserID = $_SESSION['UserID'];
-$action = new MainDAO();
-$action->getUsersPost($UserID);
 
 
 ?>
