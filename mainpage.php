@@ -1,24 +1,24 @@
 <?php
-  
+	
 	session_start();
 	
-		include 'mainclass.php'; //including the main class file
+		include 'DAO/MainDAO.php';
 		$action = new MainDAO();
-		if(!isset($_SESSION['UserID'])){ //if user_id is not set in current session
-			header('Location:index.php'); //redirect to login page
-		}else if(isset($_FILES['Profile_pic'])){ 
+		if(!isset($_SESSION['UserID'])){
+			header('Location:index.php');
+		}else if(isset($_FILES['Profile_pic'])){
 			 $name = $_FILES['Profile_pic']['name'];
 			  $type = $_FILES['Profile_pic']['type'];
 			  $error = $_FILES['Profile_pic']['error'];
 			  $tmp_name = $_FILES['Profile_pic']['tmp_name'];
-			  $directory = "images/"; //setting our directory for storing the uploaded images
+			  $directory = "images/";
 		   if($error>0){
 			  $ErrorPicMsg =  "Error on Uploading File =>".$error;
 		   }else if($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png' || $type == 'image/gif' ){
 		   
-				move_uploaded_file($tmp_name, $directory.$name); //moving the images
+				move_uploaded_file($tmp_name, $directory.$name);
 				$NewProfilePic = $directory.$name;
-			    $action -> saveUploaded_Img($_SESSION['UserID'],$NewProfilePic); //saving the image
+			    $action -> saveUploaded_Img($_SESSION['UserID'],$NewProfilePic);
   			  
 		   }else{
 			  $ErrorPicMsg = 'Unsupported Format';
@@ -41,7 +41,7 @@
 <body>
 	<div id='div-wrapper'>
 		<div id='div-header'>
-			<div id='div-logo'><span class='uLinked'>SocNet</span></div>
+			<div id='div-logo'><span class='uLinked'>NiTConneCT</span></div>
 				<!--input type='text' name='searchFriends' id='searchFriends' placeholder="Search for people [not fixed]"/ -->
 				<div id='div-notifications'>Notifications[<span class='Notification_Num'><img src='images/loading.gif' alt='Loading' /></span>]</div>
           <div id='div-notifications-list'></div>				
@@ -51,6 +51,14 @@
 			<div id='div-navigation'>
 				<ul>
 					
+					<!--<li><a href='#' id='home'>Home</a></li>
+					<li><a href='#' id='setting'>Settings</a>
+						<ul id='set'>
+							<li><a href='#' id='accountSet'>Account Settings</a></li>
+							<li><a href='#' id='privacySet'>Privacy Settings</a></li>
+						</ul>
+					</li>
+					<li><a href='#' id='Friends'>Friends</a></li>-->
 					<li><a href='logout.php' id='Logout'>Logout</a></li>
 					
 				</ul>
@@ -101,7 +109,7 @@
 				</div><!--end div tag (id div-leftcontent-profilepic)-->
 				
 				<div id='div-for-public-chat'>
-					<h3 id='span-pchat'>Public Chatroom</h3>
+					<h3 id='span-pchat'>Public Chat</h3>
 					<div id='div-tbl-for-chat'>
 					
 					  <div id='div-for-online'><span id='count-online'><?php echo $action->countUsersOnline();?> <small>Online user(s)</small></span></div>
@@ -122,9 +130,7 @@
 			</div><!--end div tag (id div-leftcontent)-->
 			
 			<div id='div-rightcontent'>
-                <div id='div-loading-post'>
-                    <img src='images/loading.gif' alt='Loading' />
-                </div>
+                
 			
 			    <div id='div-update-upload'>
 			        <span id='span-updatestatus'>Update Status</span>
@@ -132,7 +138,7 @@
 			    </div>
 			    
 			    <div id='div-for-post-area'>
-			        <textarea name='post-message' id='post-message' cols="30" rows="3"></textarea>
+			        <textarea name='post-message' id='post-message' cols="25" rows="1" placeholder="What's on your mind...."></textarea>
 			        <div id='div-for-button'>
 			            <button id='btn_post'>POST</button>
 			        </div>

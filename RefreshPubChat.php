@@ -1,7 +1,8 @@
 <?php
 
-include 'mainclass.php';
+   include 'DAO/MainDAO.php';
+  
+   $Refresh = new MainDAO();
+   $Refresh->refreshPubChat();
 
-$Refresh = new MainDAO();
-$Refresh->refreshPubChat();
 ?>

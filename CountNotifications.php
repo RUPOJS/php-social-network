@@ -1,9 +1,9 @@
 <?php
 
-session_start();
+  session_start();
 
-include 'mainclass.php';
-
-$UserID = $_SESSION['UserID'];
-$action = new MainDAO();
-$action->countNotifications($UserID);
+  include 'DAO/MainDAO.php';
+  
+  $UserID = $_SESSION['UserID'];
+  $action = new MainDAO();
+  $action -> countNotifications($UserID);
